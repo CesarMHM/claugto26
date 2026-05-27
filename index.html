@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>MotionPass Industrial | Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg: #070b12;
+      --bg2: #0d1624;
+      --panel: #101827;
+      --panel2: #172033;
+      --card: #111c2e;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --line: #243145;
+      --blue: #2563eb;
+      --cyan: #06b6d4;
+      --green: #22c55e;
+      --yellow: #eab308;
+      --orange: #f97316;
+      --red: #ef4444;
+      --purple: #8b5cf6;
+      --metal: #64748b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 32%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      color: var(--text);
+    }
+
+    .header-industrial {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(7, 11, 18, 0.98), rgba(15, 23, 42, 0.96)),
+        repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0 8px, transparent 8px 16px);
+      border-bottom: 1px solid #29406a;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+      padding: 18px 20px;
+    }
+
+    .header-industrial::after {
+      content: "";
+      position: absolute;
+      right: -120px;
+      top: -80px;
+      width: 420px;
+      height: 260px;
+      background: linear-gradient(135deg, transparent, rgba(6,182,212,0.13), transparent);
+      transform: rotate(-10deg);
+    }
+
+    .header-contenido {
+      position: relative;
+      z-index: 2;
+      max-width: 1440px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 230px 1fr 150px;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .header-logos {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-logos.derecha { justify-content: flex-end; }
+
+    .logo-header {
+      height: 66px;
+      width: auto;
+      object-fit: contain;
+      padding: 4px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .header-texto { text-align: center; }
+
+    .etiqueta-foro {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(6, 182, 212, 0.45);
+      background: rgba(6, 182, 212, 0.10);
+      color: #67e8f9;
+      font-size: 12px;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .header-texto h1 {
+      margin: 0;
+      color: white;
+      font-size: 36px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .header-texto p {
+      margin: 8px 0 0 0;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .contenedor {
+      max-width: 1440px;
+      margin: 20px auto;
+      padding: 0 16px 30px 16px;
+    }
+
+    .barra-superior {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+      background: rgba(16, 24, 39, 0.86);
+      border: 1px solid var(--line);
+      padding: 14px;
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+    }
+
+    button, select {
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 6px 16px rgba(37,99,235,0.25);
+    }
+
+    button:hover { filter: brightness(1.08); }
+
+    select {
+      background: var(--panel2);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    label { color: var(--text); }
+
+    .estado-inline {
+      font-size: 13px;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    .tarjetas {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(170px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .tarjeta {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--card), #0c1422);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.24);
+    }
+
+    .tarjeta::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      bottom: -40px;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: rgba(6,182,212,0.07);
+    }
+
+    .tarjeta h3 {
+      margin: 0 0 8px 0;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: normal;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .tarjeta .valor {
+      font-size: 32px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .tarjeta .subtexto {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .grid-triple {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .grid-doble {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .bloque {
+      background: linear-gradient(180deg, rgba(16, 24, 39, 0.98), rgba(12, 20, 34, 0.98));
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+    }
+
+    .bloque h2 {
+      margin: 0 0 14px 0;
+      font-size: 19px;
+      color: #dbeafe;
+      letter-spacing: .3px;
+    }
+
+    .fila-barras {
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 175px 1fr 48px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .fila-barras span {
+      font-weight: bold;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .barra-contenedor {
+      height: 22px;
+      background: #233148;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .barra {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.4s ease;
+      background: linear-gradient(90deg, var(--cyan), var(--blue));
+    }
+
+    .barra.proveedor { background: linear-gradient(90deg, #38bdf8, #2563eb); }
+    .barra.supervisor { background: linear-gradient(90deg, #fde047, #eab308); }
+    .barra.operador { background: linear-gradient(90deg, #86efac, #16a34a); }
+    .barra.desconocido { background: linear-gradient(90deg, #f87171, #dc2626); }
+    .barra.demo { background: linear-gradient(90deg, #c084fc, #7c3aed); }
+
+    .resumen-box {
+      display: grid;
+      gap: 12px;
+    }
+
+    .resumen-item {
+      background: #162033;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 12px;
+    }
+
+    .resumen-item .titulo {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .resumen-item .dato {
+      font-size: 22px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .alerta {
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      border: 1px solid transparent;
+      line-height: 1.35;
+    }
+
+    .alerta.info {
+      background: rgba(59, 130, 246, 0.12);
+      color: #93c5fd;
+      border-color: rgba(59, 130, 246, 0.25);
+    }
+
+    .alerta.ok {
+      background: rgba(34, 197, 94, 0.12);
+      color: #86efac;
+      border-color: rgba(34, 197, 94, 0.25);
+    }
+
+    .alerta.warn {
+      background: rgba(245, 158, 11, 0.12);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.25);
+    }
+
+    .alerta.danger {
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+
+    .zona-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+    }
+
+    .zona-card {
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #172132;
+    }
+
+    .zona-card h4 {
+      margin: 0 0 8px 0;
+      color: #dbeafe;
+      font-size: 15px;
+    }
+
+    .zona-card .num {
+      font-size: 30px;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .estado-zona {
+      font-size: 12px;
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .estado-verde {
+      background: rgba(34, 197, 94, 0.15);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .estado-naranja {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .estado-rojo {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .badge.proveedor { color: #93c5fd; background: rgba(37,99,235,0.15); }
+    .badge.supervisor { color: #fde68a; background: rgba(234,179,8,0.16); }
+    .badge.operador { color: #86efac; background: rgba(34,197,94,0.15); }
+    .badge.visitante { color: #cbd5e1; background: rgba(100,116,139,0.18); }
+    .badge.demo { color: #ddd6fe; background: rgba(139,92,246,0.18); }
+    .badge.desconocido { color: #fca5a5; background: rgba(239,68,68,0.18); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    th, td {
+      border-bottom: 1px solid #233148;
+      padding: 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #162033;
+      color: #bfdbfe;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    tr:hover { background: rgba(59, 130, 246, 0.06); }
+
+    .estado {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nota {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 1180px) {
+      .tarjetas { grid-template-columns: repeat(2, 1fr); }
+      .grid-doble, .grid-triple { grid-template-columns: 1fr; }
+      .header-contenido { grid-template-columns: 1fr; }
+      .header-logos, .header-logos.derecha { justify-content: center; }
+      .header-texto h1 { font-size: 28px; }
+      .fila-barras { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header-industrial">
+    <div class="header-contenido">
+      <div class="header-logos">
+        <img src="tecnm.png" class="logo-header" alt="TecNM">
+        <img src="itesi.png" class="logo-header" alt="ITESI">
+      </div>
+
+      <div class="header-texto">
+        <div class="etiqueta-foro">Foro de Proveeduría Automotriz · Industria 4.0</div>
+        <h1>MotionPass Industrial</h1>
+        <p>Dashboard de trazabilidad visual, flujo operativo y monitoreo de identificadores industriales en tiempo real</p>
+      </div>
+
+      <div class="header-logos derecha">
+        <img src="cerbero.png" class="logo-header" alt="Cerbero">
+      </div>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section class="barra-superior">
+      <button onclick="cargarDatos()">Actualizar datos</button>
+
+      <label for="filtroFecha"><strong>Filtrar por fecha:</strong></label>
+      <select id="filtroFecha" onchange="aplicarFiltroFecha()">
+        <option value="TODAS">Todas las fechas</option>
+      </select>
+
+      <label for="filtroPerfil"><strong>Perfil:</strong></label>
+      <select id="filtroPerfil" onchange="aplicarFiltros()">
+        <option value="TODOS">Todos los perfiles</option>
+      </select>
+
+      <div class="estado-inline" id="estadoCargaInline">Esperando carga...</div>
+    </section>
+
+    <section class="tarjetas">
+      <div class="tarjeta">
+        <h3>Eventos de trazabilidad</h3>
+        <div class="valor" id="totalRegistros">0</div>
+        <div class="subtexto">Registros detectados</div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Personal operativo</h3>
+        <div class="valor" id="totalOperadores">0</div>
+        <div class="subtexto">Operadores detectados</div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Proveedores</h3>
+        <div class="valor" id="totalProveedores">0</div>
+        <div class="subtexto">Acceso logístico externo</div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Supervisores</h3>
+        <div class="valor" id="totalSupervisores">0</div>
+        <div class="subtexto">Acceso privilegiado</div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>No identificados</h3>
+        <div class="valor" id="totalDesconocidos">0</div>
+        <div class="subtexto">Alertas potenciales</div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Último movimiento</h3>
+        <div class="valor" id="ultimoMovimientoCard" style="font-size:22px;">--:--:--</div>
+        <div class="subtexto" id="ultimoMovimientoSubtexto">Sin datos</div>
+      </div>
+    </section>
+
+    <section class="grid-triple">
+      <div class="bloque">
+        <h2>Resumen ejecutivo industrial</h2>
+        <div class="resumen-box" id="resumenEjecutivo"></div>
+      </div>
+
+      <div class="bloque">
+        <h2>Alertas de operación</h2>
+        <div id="alertasContainer"></div>
+      </div>
+
+      <div class="bloque">
+        <h2>Puntos de control</h2>
+        <div id="accesosContainer"></div>
+        <div class="nota">Los accesos A, B y C pueden representar casetas, líneas, almacenes o puntos de validación interna.</div>
+      </div>
+    </section>
+
+    <section class="grid-doble">
+      <div class="bloque">
+        <h2>Flujo por zona operativa</h2>
+        <div id="zonasContainer"></div>
+      </div>
+
+      <div class="bloque">
+        <h2>Perfiles detectados por IA</h2>
+        <div id="tiposContainer"></div>
+      </div>
+    </section>
+
+    <section class="grid-doble">
+      <div class="bloque">
+        <h2>Mapa operativo de actividad</h2>
+        <div id="zonasTarjetasContainer" class="zona-grid"></div>
+        <div class="nota">La saturación es una referencia visual basada en la cantidad de registros del filtro actual.</div>
+      </div>
+
+      <div class="bloque">
+        <h2>Clasificación por aplicación industrial</h2>
+        <div id="familiasContainer"></div>
+        <div class="nota">
+          El sistema puede extenderse a gafetes, pases temporales, identificadores visuales de proveedores,
+          pulseras de evento, credenciales institucionales o elementos piloto de demostración.
+        </div>
+      </div>
+    </section>
+
+    <section class="bloque">
+      <h2>Bitácora de movimientos recientes</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Punto</th>
+            <th>Zona operativa</th>
+            <th>Perfil detectado</th>
+            <th>Clasificación</th>
+            <th>Confianza IA</th>
+            <th>Dispositivo</th>
+          </tr>
+        </thead>
+        <tbody id="tablaRegistros"></tbody>
+      </table>
+      <div class="estado" id="estadoCarga">Esperando carga de datos...</div>
+    </section>
+  </main>
+
+  <script>
+    const FIREBASE_URL = "https://in-26-v1-default-rtdb.firebaseio.com/accesos.json";
+
+    const PERFILES_OBSOLETOS = [
+      ["SITI", "PAGO"].join(""),
+      ["FAR", "MACIA"].join(""),
+      ["INNOVA", "TEC"].join(""),
+      ["V", "IP"].join(""),
+      ["ST", "AFF"].join(""),
+      ["GEN", "ERAL"].join("")
+    ];
+
+    const CONFIG_PERFILES = {
+      "PROVEEDOR": {
+        familia: "Proveedor / logística externa",
+        badge: "proveedor",
+        estado: "Autorizado para validación logística"
+      },
+      "OPERADOR": {
+        familia: "Personal operativo",
+        badge: "operador",
+        estado: "Autorizado para zona operativa"
+      },
+      "SUPERVISOR": {
+        familia: "Supervisión de procesos",
+        badge: "supervisor",
+        estado: "Acceso privilegiado"
+      },
+      "ITESI": {
+        familia: "Colaborador académico / desarrollo",
+        badge: "visitante",
+        estado: "Identificador institucional"
+      },
+      "INE": {
+        familia: "Visitante externo",
+        badge: "visitante",
+        estado: "Validación de visitante"
+      },
+      "PULSERA": {
+        familia: "Demo / evento temporal",
+        badge: "demo",
+        estado: "Elemento de demostración"
+      },
+      "OXXO": {
+        familia: "Demo / credencial comercial",
+        badge: "demo",
+        estado: "Elemento de demostración"
+      },
+      "DESCONOCIDO": {
+        familia: "No identificado",
+        badge: "desconocido",
+        estado: "Requiere revisión"
+      },
+      "REGISTRO ANTERIOR": {
+        familia: "Historial previo del sistema",
+        badge: "visitante",
+        estado: "Registro conservado solo para trazabilidad histórica"
+      }
+    };
+
+    let registrosGlobales = [];
+    let registrosFiltrados = [];
+
+    function limpiarTexto(valor) {
+      if (valor === null || valor === undefined) return "";
+      let texto = String(valor).trim();
+      while (texto.startsWith('"') && texto.endsWith('"') && texto.length >= 2) {
+        texto = texto.slice(1, -1).trim();
+      }
+      return texto;
+    }
+
+    function limpiarNumero(valor) {
+      const limpio = limpiarTexto(valor).replace("%", "");
+      const numero = Number(limpio);
+      return isNaN(numero) ? 0 : numero;
+    }
+
+    function formatearHora(hora) {
+      const texto = limpiarTexto(hora).padStart(6, "0");
+      if (texto.length === 6 && /^[0-9]+$/.test(texto)) {
+        return `${texto.substring(0, 2)}:${texto.substring(2, 4)}:${texto.substring(4, 6)}`;
+      }
+      return texto;
+    }
+
+    function formatearFecha(fecha) {
+      const texto = limpiarTexto(fecha);
+      if (texto.includes("-")) {
+        const partes = texto.split("-");
+        if (partes.length === 3) return `${partes[2]}-${partes[1]}-${partes[0]}`;
+      }
+      return texto;
+    }
+
+    function normalizarTipoBase(tipo) {
+      const t = limpiarTexto(tipo).toUpperCase();
+
+      // Mantiene el historial, pero evita mostrar categorías anteriores que ya no pertenecen al modelo actual.
+      if (PERFILES_OBSOLETOS.some(nombre => t.includes(nombre))) return "REGISTRO ANTERIOR";
+
+      if (t.includes("PROVEEDOR")) return "PROVEEDOR";
+      if (t.includes("OPERADOR")) return "OPERADOR";
+      if (t.includes("SUPERVISOR")) return "SUPERVISOR";
+      if (t.includes("ITESI")) return "ITESI";
+      if (t.includes("INE")) return "INE";
+      if (t.includes("PULSERA")) return "PULSERA";
+      if (t.includes("OXXO")) return "OXXO";
+      if (t.includes("DESCONOCIDO")) return "DESCONOCIDO";
+      if (!t) return "SIN CLASIFICAR";
+      return t;
+    }
+
+    function obtenerPerfil(tipo) {
+      const base = normalizarTipoBase(tipo);
+      return CONFIG_PERFILES[base] || {
+        familia: "Otro identificador visual",
+        badge: "visitante",
+        estado: "Clasificación "
+      };
+    }
+
+    function obtenerZonaIndustrial(zona, acceso) {
+      const z = limpiarTexto(zona);
+      if (z) return z;
+
+      const a = limpiarTexto(acceso).toUpperCase();
+      if (a === "A") return "Recepción / Acceso principal";
+      if (a === "B") return "Logística / Proveedores";
+      if (a === "C") return "Producción / Línea piloto";
+      return "Zona no especificada";
+    }
+
+    function normalizarRegistro(registro) {
+      const fechaOriginal = limpiarTexto(registro.fecha);
+      const horaOriginal = limpiarTexto(registro.hora);
+      const tipoBase = normalizarTipoBase(registro.tipo);
+      const perfil = obtenerPerfil(tipoBase);
+
+      return {
+        acceso: limpiarTexto(registro.acceso),
+        accion: limpiarTexto(registro.accion),
+        confianza: limpiarNumero(registro.confianza),
+        dispositivo: limpiarTexto(registro.dispositivo),
+        fecha: formatearFecha(fechaOriginal),
+        hora: formatearHora(horaOriginal),
+        fechaOriginal,
+        horaOriginal,
+        id_registro: limpiarTexto(registro.id_registro),
+        tipo: tipoBase,
+        zona: obtenerZonaIndustrial(registro.zona, registro.acceso),
+        familia: perfil.familia,
+        badge: perfil.badge,
+        estadoIndustrial: perfil.estado
+      };
+    }
+
+    function recorrerDatos(data) {
+      const registros = [];
+      if (!data) return registros;
+
+      for (const acceso in data) {
+        const fechas = data[acceso];
+        for (const fecha in fechas) {
+          const horas = fechas[fecha];
+          for (const hora in horas) {
+            const registro = horas[hora];
+            if (typeof registro === "object" && registro !== null) {
+              registros.push(normalizarRegistro(registro));
+            }
+          }
+        }
+      }
+      return registros;
+    }
+
+    function llenarSelectorFechas(registros) {
+      const select = document.getElementById("filtroFecha");
+      const actual = select.value;
+      const fechasUnicas = [...new Set(registros.map(r => r.fechaOriginal))].filter(Boolean).sort().reverse();
+
+      select.innerHTML = `<option value="TODAS">Todas las fechas</option>`;
+      fechasUnicas.forEach(fecha => {
+        const option = document.createElement("option");
+        option.value = fecha;
+        option.textContent = formatearFecha(fecha);
+        select.appendChild(option);
+      });
+
+      if ([...select.options].some(opt => opt.value === actual)) select.value = actual;
+    }
+
+    function llenarSelectorPerfiles(registros) {
+      const select = document.getElementById("filtroPerfil");
+      const actual = select.value;
+      const perfiles = [...new Set(registros.map(r => r.tipo))].filter(Boolean).sort();
+
+      select.innerHTML = `<option value="TODOS">Todos los perfiles</option>`;
+      perfiles.forEach(perfil => {
+        const option = document.createElement("option");
+        option.value = perfil;
+        option.textContent = perfil;
+        select.appendChild(option);
+      });
+
+      if ([...select.options].some(opt => opt.value === actual)) select.value = actual;
+    }
+
+    function aplicarFiltroFecha() {
+      aplicarFiltros();
+    }
+
+    function aplicarFiltros() {
+      const fechaSeleccionada = document.getElementById("filtroFecha").value;
+      const perfilSeleccionado = document.getElementById("filtroPerfil").value;
+
+      registrosFiltrados = registrosGlobales.filter(r => {
+        const coincideFecha = fechaSeleccionada === "TODAS" || r.fechaOriginal === fechaSeleccionada;
+        const coincidePerfil = perfilSeleccionado === "TODOS" || r.tipo === perfilSeleccionado;
+        return coincideFecha && coincidePerfil;
+      });
+
+      renderDashboard(registrosFiltrados);
+    }
+
+    function contarPorCampo(registros, campo) {
+      const conteo = {};
+      registros.forEach(r => {
+        const valor = r[campo] || `SIN ${campo.toUpperCase()}`;
+        conteo[valor] = (conteo[valor] || 0) + 1;
+      });
+      return conteo;
+    }
+
+    function contarTipo(registros, tipo) {
+      return registros.filter(r => r.tipo === tipo).length;
+    }
+
+    function renderTarjetas(registros) {
+      document.getElementById("totalRegistros").textContent = registros.length;
+      document.getElementById("totalOperadores").textContent = contarTipo(registros, "OPERADOR");
+      document.getElementById("totalProveedores").textContent = contarTipo(registros, "PROVEEDOR");
+      document.getElementById("totalSupervisores").textContent = contarTipo(registros, "SUPERVISOR");
+      document.getElementById("totalDesconocidos").textContent = contarTipo(registros, "DESCONOCIDO");
+
+      if (registros.length > 0) {
+        const ordenados = [...registros].sort((a, b) => {
+          const da = `${a.fechaOriginal} ${a.horaOriginal}`;
+          const db = `${b.fechaOriginal} ${b.horaOriginal}`;
+          return db.localeCompare(da);
+        });
+        const ultimo = ordenados[0];
+        document.getElementById("ultimoMovimientoCard").textContent = ultimo.hora || "--:--:--";
+        document.getElementById("ultimoMovimientoSubtexto").textContent =
+          `${ultimo.tipo} | ${ultimo.zona} | Punto ${ultimo.acceso}`;
+      } else {
+        document.getElementById("ultimoMovimientoCard").textContent = "--:--:--";
+        document.getElementById("ultimoMovimientoSubtexto").textContent = "Sin datos";
+      }
+    }
+
+    function claseBarra(nombre) {
+      const n = String(nombre).toUpperCase();
+      if (n.includes("PROVEEDOR")) return "proveedor";
+      if (n.includes("SUPERVISOR")) return "supervisor";
+      if (n.includes("OPERADOR")) return "operador";
+      if (n.includes("DESCONOCIDO")) return "desconocido";
+      if (n.includes("DEMO") || n.includes("PULSERA") || n.includes("OXXO")) return "demo";
+      return "";
+    }
+
+    function renderBarras(conteo, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
+
+      const entradas = Object.entries(conteo).sort((a, b) => b[1] - a[1]);
+      const maxValor = Math.max(...entradas.map(e => e[1]), 1);
+
+      if (entradas.length === 0) {
+        container.innerHTML = `<div class="alerta info">No hay datos para mostrar.</div>`;
+        return;
+      }
+
+      entradas.forEach(([clave, cantidad]) => {
+        const porcentaje = (cantidad / maxValor) * 100;
+        const fila = document.createElement("div");
+        fila.className = "fila-barras";
+        fila.innerHTML = `
+          <span>${clave}</span>
+          <div class="barra-contenedor">
+            <div class="barra ${claseBarra(clave)}" style="width:${porcentaje}%"></div>
+          </div>
+          <strong>${cantidad}</strong>
+        `;
+        container.appendChild(fila);
+      });
+    }
+
+    function obtenerEstadoZona(cantidad) {
+      if (cantidad >= 8) return { texto: "Alta actividad", clase: "estado-rojo" };
+      if (cantidad >= 4) return { texto: "Actividad media", clase: "estado-naranja" };
+      return { texto: "Actividad estable", clase: "estado-verde" };
+    }
+
+    function renderTarjetasZona(conteoZonas) {
+      const container = document.getElementById("zonasTarjetasContainer");
+      container.innerHTML = "";
+
+      const zonas = Object.keys(conteoZonas);
+      if (zonas.length === 0) {
+        container.innerHTML = `<div class="alerta info">No hay zonas disponibles.</div>`;
+        return;
+      }
+
+      zonas.forEach(zona => {
+        const cantidad = conteoZonas[zona];
+        const estado = obtenerEstadoZona(cantidad);
+        const card = document.createElement("div");
+        card.className = "zona-card";
+        card.innerHTML = `
+          <h4>${zona}</h4>
+          <div class="num">${cantidad}</div>
+          <div class="estado-zona ${estado.clase}">${estado.texto}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderResumenEjecutivo(registros) {
+      const container = document.getElementById("resumenEjecutivo");
+      container.innerHTML = "";
+
+      if (registros.length === 0) {
+        container.innerHTML = `<div class="alerta info">No hay datos disponibles para resumen ejecutivo.</div>`;
+        return;
+      }
+
+      const conteoPuntos = contarPorCampo(registros, "acceso");
+      const conteoZonas = contarPorCampo(registros, "zona");
+      const conteoTipos = contarPorCampo(registros, "tipo");
+
+      const puntoMasActivo = Object.keys(conteoPuntos).reduce((a, b) => conteoPuntos[a] >= conteoPuntos[b] ? a : b);
+      const zonaMasActiva = Object.keys(conteoZonas).reduce((a, b) => conteoZonas[a] >= conteoZonas[b] ? a : b);
+      const perfilMasFrecuente = Object.keys(conteoTipos).reduce((a, b) => conteoTipos[a] >= conteoTipos[b] ? a : b);
+
+      const promedioConfianza = (
+        registros.reduce((acc, r) => acc + r.confianza, 0) / registros.length
+      ).toFixed(1);
+
+      const items = [
+        { titulo: "Punto de control más activo", dato: `Punto ${puntoMasActivo}` },
+        { titulo: "Zona operativa con mayor flujo", dato: zonaMasActiva },
+        { titulo: "Perfil más detectado", dato: perfilMasFrecuente },
+        { titulo: "Promedio de confianza IA", dato: `${promedioConfianza}%` }
+      ];
+
+      items.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "resumen-item";
+        div.innerHTML = `<div class="titulo">${item.titulo}</div><div class="dato">${item.dato}</div>`;
+        container.appendChild(div);
+      });
+    }
+
+    function renderAlertas(registros) {
+      const container = document.getElementById("alertasContainer");
+      container.innerHTML = "";
+
+      if (registros.length === 0) {
+        container.innerHTML = `<div class="alerta info">No hay registros para generar alertas.</div>`;
+        return;
+      }
+
+      const desconocidos = contarTipo(registros, "DESCONOCIDO");
+      const proveedores = contarTipo(registros, "PROVEEDOR");
+      const operadores = contarTipo(registros, "OPERADOR");
+      const supervisores = contarTipo(registros, "SUPERVISOR");
+      const demos = contarTipo(registros, "PULSERA") + contarTipo(registros, "OXXO");
+      const historicos = contarTipo(registros, "REGISTRO ANTERIOR");
+
+      const alertas = [];
+
+      alertas.push({
+        clase: "ok",
+        texto: `Flujo industrial registrado: ${operadores} operadores, ${supervisores} supervisores y ${proveedores} proveedores.`
+      });
+
+      if (desconocidos > 0) {
+        alertas.push({
+          clase: "danger",
+          texto: `Atención: ${desconocidos} detección(es) como DESCONOCIDO. Requiere validación manual o mejora de entrenamiento.`
+        });
+      } else {
+        alertas.push({
+          clase: "info",
+          texto: "Sin detecciones desconocidas en el filtro actual."
+        });
+      }
+
+      if (demos > 0) {
+        alertas.push({
+          clase: "warn",
+          texto: `${demos} detección(es) corresponden a elementos demo: pulsera u OXXO. Útiles para mostrar escalabilidad del modelo.`
+        });
+      }
+
+      if (historicos > 0) {
+        alertas.push({
+          clase: "info",
+          texto: `${historicos} registro(s) pertenecen al historial previo del sistema y se conservan para trazabilidad.`
+        });
+      }
+
+      const bajaConfianza = registros.filter(r => r.confianza > 0 && r.confianza < 65).length;
+      if (bajaConfianza > 0) {
+        alertas.push({
+          clase: "warn",
+          texto: `${bajaConfianza} registro(s) presentan confianza menor a 65%. Se recomienda reforzar dataset con más ángulos e iluminación.`
+        });
+      }
+
+      alertas.forEach(alerta => {
+        const div = document.createElement("div");
+        div.className = `alerta ${alerta.clase}`;
+        div.textContent = alerta.texto;
+        container.appendChild(div);
+      });
+    }
+
+    function renderTabla(registros) {
+      const tbody = document.getElementById("tablaRegistros");
+      tbody.innerHTML = "";
+
+      const ordenados = [...registros].sort((a, b) => {
+        const da = `${a.fechaOriginal} ${a.horaOriginal}`;
+        const db = `${b.fechaOriginal} ${b.horaOriginal}`;
+        return db.localeCompare(da);
+      });
+
+      ordenados.slice(0, 25).forEach(r => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${r.fecha}</td>
+          <td>${r.hora}</td>
+          <td>Punto ${r.acceso}</td>
+          <td>${r.zona}</td>
+          <td><span class="badge ${r.badge}">${r.tipo}</span></td>
+          <td>${r.familia}</td>
+          <td>${r.confianza}%</td>
+          <td>${r.dispositivo}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderDashboard(registros) {
+      renderTarjetas(registros);
+      renderResumenEjecutivo(registros);
+      renderAlertas(registros);
+
+      const conteoAccesos = contarPorCampo(registros, "acceso");
+      const conteoAccesosFormateado = {};
+      Object.keys(conteoAccesos).forEach(k => conteoAccesosFormateado[`Punto ${k}`] = conteoAccesos[k]);
+      renderBarras(conteoAccesosFormateado, "accesosContainer");
+
+      const conteoZonas = contarPorCampo(registros, "zona");
+      renderBarras(conteoZonas, "zonasContainer");
+      renderTarjetasZona(conteoZonas);
+
+      const conteoTipos = contarPorCampo(registros, "tipo");
+      renderBarras(conteoTipos, "tiposContainer");
+
+      const conteoFamilias = contarPorCampo(registros, "familia");
+      renderBarras(conteoFamilias, "familiasContainer");
+
+      renderTabla(registros);
+    }
+
+    function cargarDatos() {
+      const estado = document.getElementById("estadoCarga");
+      const estadoInline = document.getElementById("estadoCargaInline");
+
+      estado.textContent = "Cargando datos desde Firebase...";
+      estadoInline.textContent = "Actualizando trazabilidad...";
+
+      fetch(FIREBASE_URL)
+        .then(respuesta => respuesta.json())
+        .then(data => {
+          registrosGlobales = recorrerDatos(data);
+          llenarSelectorFechas(registrosGlobales);
+          llenarSelectorPerfiles(registrosGlobales);
+          aplicarFiltros();
+
+          estado.textContent = `Datos cargados correctamente. Registros encontrados: ${registrosGlobales.length}`;
+          estadoInline.textContent = `Última actualización: ${new Date().toLocaleTimeString()}`;
+        })
+        .catch(error => {
+          console.error(error);
+          estado.textContent = "Error al cargar datos desde Firebase.";
+          estadoInline.textContent = "Error de actualización";
+        });
+    }
+
+    cargarDatos();
+    setInterval(cargarDatos, 10000);
+  </script>
+</body>
+</html>
